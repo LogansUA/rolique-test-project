@@ -12,11 +12,9 @@ const connect = (options, eventEmitter) => {
 
     MongoClient.connect(databaseUrl)
         .then((database) => {
-            this.database = database;
-
             debug('Connection to database "%s" has been established successfully.', name);
 
-            eventEmitter.emit('db:ready', database);
+            eventEmitter.emit('db:ready', database.db(name));
         })
         .catch((error) => {
             eventEmitter.emit('db:error', error);
