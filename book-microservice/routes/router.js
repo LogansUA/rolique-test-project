@@ -1,4 +1,5 @@
 const httpStatus = require('http-status');
+const ObjectId = require('mongodb').ObjectId;
 
 module.exports = (app, router, options) => {
     const { database: db } = options;
@@ -25,6 +26,47 @@ module.exports = (app, router, options) => {
         return booksCollection.insertOne({ name, author, published_at: publishedAt })
             .then(() => {
                 return res.status(httpStatus.CREATED).json();
+            })
+            .catch((error) => {
+                return res.status(httpStatus.INTERNAL_SERVER_ERROR).json(error.toString());
+            });
+    });
+
+    router.put('/:id', function (req, res) {
+        const { id } = req.params;
+        const {
+            name,
+            author,
+            published_at: publishedAt,
+        } = req.body;
+
+        return booksCollection.updateOne({ _id: ObjectId(id) }, { $set: { name, author, published_at: publishedAt } })
+            .then(() => {
+                return res.status(httpStatus.OK).json();
+            })
+            .catch((error) => {
+                return res.status(httpStatus.INTERNAL_SERVER_ERROR).json(error.toString());
+            });
+    });
+
+    router.get('/:id', function (req, res) {
+        const { id } = req.params;
+
+        return booksCollection.find({ _id: ObjectId(id) }).toArray()
+            .then((result) => {
+                return res.status(httpStatus.OK).json({ book: result });
+            })
+            .catch((error) => {
+                return res.status(httpStatus.INTERNAL_SERVER_ERROR).json(error.toString());
+            });
+    });
+
+    router.delete('/:id', function (req, res) {
+        const { id } = req.params;
+
+        return booksCollection.deleteOne({ _id: ObjectId(id) })
+            .then(() => {
+                return res.status(httpStatus.OK).json();
             })
             .catch((error) => {
                 return res.status(httpStatus.INTERNAL_SERVER_ERROR).json(error.toString());
