@@ -1,9 +1,8 @@
-var express = require('express');
-var router = express.Router();
+module.exports = (app, router, options) => {
+    /* GET users listing. */
+    router.get('/', function (req, res, next) {
+        return res.status(200).json({ message: 'book-microservice' });
+    });
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
-
-module.exports = router;
+    app.use('/users', router);
+};
