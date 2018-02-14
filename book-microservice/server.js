@@ -47,7 +47,7 @@ dbEmitter.on('db:ready', (database) => {
 
     const server = http.createServer(app);
 
-    server.listen(port, process.env.HOST || 'localhost');
+    server.listen(port);
 
     server.on('error', onError);
     server.on('listening', onListening);

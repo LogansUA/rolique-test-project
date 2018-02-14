@@ -6,7 +6,7 @@ module.exports = (app, router, options) => {
 
     const booksCollection = db.collection('books');
 
-    router.get('/', function (req, res) {
+    router.get('/', (req, res) => {
         return booksCollection.find().toArray()
             .then((books) => {
                 return res.status(httpStatus.OK).json({ books });
@@ -16,7 +16,7 @@ module.exports = (app, router, options) => {
             });
     });
 
-    router.post('/', function (req, res) {
+    router.post('/', (req, res) => {
         const {
             name,
             author,
@@ -32,7 +32,7 @@ module.exports = (app, router, options) => {
             });
     });
 
-    router.put('/:id', function (req, res) {
+    router.put('/:id', (req, res) => {
         const { id } = req.params;
         const {
             name,
@@ -49,7 +49,7 @@ module.exports = (app, router, options) => {
             });
     });
 
-    router.get('/:id', function (req, res) {
+    router.get('/:id', (req, res) => {
         const { id } = req.params;
 
         return booksCollection.find({ _id: ObjectId(id) }).toArray()
@@ -61,7 +61,7 @@ module.exports = (app, router, options) => {
             });
     });
 
-    router.delete('/:id', function (req, res) {
+    router.delete('/:id', (req, res) => {
         const { id } = req.params;
 
         return booksCollection.deleteOne({ _id: ObjectId(id) })
