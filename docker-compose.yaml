@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  api_gateway:
+    container_name: api_gateway
+    env_file:
+      - api_gateway/.env
+    restart: always
+    environment:
+      - BOOK_MICROSERVICE_HOST=book_service
+      - BOOK_MICROSERVICE_PORT=3000
+
+  book_service:
+    container_name: book_service
+    env_file:
+      - book_microservice/.env
+    restart: always
+    build: book_microservice/.
+    links:
+      - mongo
+      - api_gateway
+    environment:
+      - DB_HOST=mongo
+
+  mongo:
+    container_name: mongo
+    image: mongo:latest
