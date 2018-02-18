@@ -7,21 +7,6 @@ module.exports = (app, options) => {
     const { database: db } = options;
 
     const booksCollection = db.collection('books');
-    // const socket = app.get('socket');
-
-    // socket.on('connect', (socket) => {
-    //     console.log('BOOK MICROSERVER SOCKET CONNECTED');
-    // });
-    //
-    // socket.on('get:books', (data, fn) => {
-    //     console.log('BOOK MICROSERVER EVENT `get:books` EMITTER');
-    //
-    //     return booksCollection.find().toArray()
-    //         .then((books) => {
-    //             fn(books);
-    //         })
-    //         .catch(console.error);
-    // });
 
     router.get('/', (req, res) => {
         return booksCollection.find().toArray()

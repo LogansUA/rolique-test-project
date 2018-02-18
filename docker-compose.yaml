@@ -9,8 +9,9 @@ services:
     build: entrypoint/.
     ports:
       - "80:80"
-#    environment:
-#      - API_GATEWAY_BASE_URL=http://api_gateway:4000
+    environment:
+      - API_GATEWAY_BASE_URL=http://api_gateway:4000
+      - SERVER_UPLOADS_DIRECTORY=../uploads
 
   api_gateway:
     container_name: api_gateway
@@ -28,6 +29,17 @@ services:
       - book_microservice/.env
     restart: always
     build: book_microservice/.
+    links:
+      - mongo
+    environment:
+      - DB_HOST=mongo
+
+  user_service:
+    container_name: user_service
+    env_file:
+      - user_microservice/.env
+    restart: always
+    build: user_microservice/.
     links:
       - mongo
     environment:

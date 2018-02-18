@@ -3,7 +3,7 @@ const express = require('express');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const debug = require('debug')('book-microservice:server');
+const debug = require('debug')('user-microservice:server');
 const db = require('./config/db');
 
 const Router = require('./routes/router');
