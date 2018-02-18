@@ -1,11 +1,23 @@
 version: '3'
 
 services:
+  entrypoint:
+    container_name: entrypoint
+    env_file:
+      - entrypoint/.env
+    restart: always
+    build: entrypoint/.
+    ports:
+      - "80:80"
+#    environment:
+#      - API_GATEWAY_BASE_URL=http://api_gateway:4000
+
   api_gateway:
     container_name: api_gateway
     env_file:
       - api_gateway/.env
     restart: always
+    build: api_gateway/.
     environment:
       - BOOK_MICROSERVICE_HOST=book_service
       - BOOK_MICROSERVICE_PORT=3000
@@ -18,7 +30,6 @@ services:
     build: book_microservice/.
     links:
       - mongo
-      - api_gateway
     environment:
       - DB_HOST=mongo
 

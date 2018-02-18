@@ -1,0 +1,20 @@
+{
+  "name": "book-microservice",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "dev": "./node_modules/.bin/nodemon server.js"
+  },
+  "dependencies": {
+    "axios": "^0.17.1",
+    "body-parser": "~1.18.2",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "express": "~4.15.5",
+    "http-status": "^1.0.1",
+    "morgan": "~1.9.0",
+    "nodemon": "^1.14.12",
+    "socket.io": "^2.0.4"
+  }
+}

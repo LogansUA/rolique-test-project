@@ -1,8 +1,8 @@
 #!/bin/bash
 
-docker-compose up -d nginx_proxy
+#docker-compose up -d entrypoint
 
-sleep 1
+#sleep 1
 
 docker-compose up -d mongo
 
