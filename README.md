@@ -37,5 +37,5 @@ $ ./start.sh
 
 ## Usage
 
-The entry point of whole system is the `entrypoint` container, by default it's running on `http://localhost:80` url.
+The entry point of whole system is the `entrypoint` container, by default it's running on `http://localhost:80` (base path `/api`) url.
 Static files is served by `entrypoint` container, by default there are two paths `/documents` (url: `http://localhost:80/documents`) and `/images` (url: `http://localhost:80/images`)

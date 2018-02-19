@@ -12,7 +12,7 @@ Body:
 
 ```json
 {
-    "name": "EXAMPLE_USER_NAME"
+    "name": "EXAMPLE_USER_NAME",
     "email": "example@gmail.com"
 }
 ```
@@ -25,7 +25,7 @@ Body:
 
 ```json
 {
-    "name": "EXAMPLE_USER_NAME"
+    "name": "EXAMPLE_USER_NAME",
     "email": "example@gmail.com"
 }
 ```
