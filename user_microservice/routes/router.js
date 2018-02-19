@@ -6,11 +6,11 @@ module.exports = (app, options) => {
     const router = express.Router();
     const { database: db } = options;
 
-    const booksCollection = db.collection('books');
+    const usersCollection = db.collection('users');
 
     router.get('/', async (req, res) => {
         try {
-            const users = await booksCollection.find().toArray();
+            const users = await usersCollection.find().toArray();
 
             return res.status(httpStatus.OK).json({ users });
         } catch (error) {
@@ -25,7 +25,7 @@ module.exports = (app, options) => {
                 email,
             } = req.body;
 
-            await booksCollection.insertOne({ name, email });
+            await usersCollection.insertOne({ name, email });
 
             return res.status(httpStatus.CREATED).json();
         } catch (error) {
@@ -40,7 +40,7 @@ module.exports = (app, options) => {
                 name,
                 email,
             } = req.body;
-            await booksCollection.updateOne({ _id: ObjectId(id) }, { $set: { name, email } });
+            await usersCollection.updateOne({ _id: ObjectId(id) }, { $set: { name, email } });
 
             return res.status(httpStatus.OK).json();
         } catch (error) {
@@ -52,7 +52,7 @@ module.exports = (app, options) => {
         try {
             const { id } = req.params;
 
-            const user = await booksCollection.find({ _id: ObjectId(id) }).toArray();
+            const user = await usersCollection.find({ _id: ObjectId(id) }).toArray();
 
             return res.status(httpStatus.OK).json({ user });
         } catch (error) {
@@ -64,7 +64,7 @@ module.exports = (app, options) => {
         try {
             const { id } = req.params;
 
-            await booksCollection.deleteOne({ _id: ObjectId(id) });
+            await usersCollection.deleteOne({ _id: ObjectId(id) });
 
             return res.status(httpStatus.OK).json();
         } catch (error) {

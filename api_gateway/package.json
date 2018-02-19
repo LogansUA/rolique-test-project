@@ -1,5 +1,5 @@
 {
-  "name": "book-microservice",
+  "name": "api-gateway",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -13,8 +13,9 @@
     "debug": "~2.6.9",
     "express": "~4.15.5",
     "http-status": "^1.0.1",
-    "morgan": "~1.9.0",
-    "nodemon": "^1.14.12",
-    "socket.io": "^2.0.4"
+    "morgan": "~1.9.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.14.12"
   }
 }

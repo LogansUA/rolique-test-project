@@ -2,8 +2,9 @@ const express = require('express');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const HttpStatus = require('http-status');
+const axios = require('axios');
 const debug = require('debug')('api-gateway:server');
-const Router = require('./routes/router');
 
 const app = express();
 const server = app.listen(process.env.PORT, () => {
@@ -32,13 +33,36 @@ app.use(function (req, res, next) {
 
         next();
     } catch (err) {
-        console.error(`Origin error: ${JSON.stringify(knownOrigins)} | ${req.headers.origin} | ${err}`);
+        console.error(`Origin error: ${JSON.stringify(knownOrigins)} | ${req.headers.origin} | ${err.toString()}`);
 
         next(err);
     }
 });
 
-Router(app);
+app.all('/books*', async (req, res) => {
+    try {
+        const booksBaseUrl = `${process.env.BOOK_MICROSERVICE_BASE_URL}`;
+        const requestUrl = `${booksBaseUrl}${req.originalUrl}`;
+
+        const response = await axios[req.method.toLowerCase()](requestUrl, { data: req.body });
+
+        return res.status(response.status).json(response.data);
+    } catch (error) {
+        return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(error.toString());
+    }
+});
+app.all('/users*', async (req, res) => {
+    try {
+        const usersBaseUrl = `${process.env.USER_MICROSERVICE_BASE_URL}`;
+        const requestUrl = `${usersBaseUrl}${req.originalUrl}`;
+
+        const response = await axios[req.method.toLowerCase()](requestUrl, req.body);
+
+        return res.status(response.status).json(response.data);
+    } catch (error) {
+        return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(error.toString());
+    }
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -11,7 +11,7 @@ services:
       - "80:80"
     environment:
       - API_GATEWAY_BASE_URL=http://api_gateway:4000
-      - SERVER_UPLOADS_DIRECTORY=../uploads
+      - SERVER_UPLOADS_DIRECTORY=uploads
 
   api_gateway:
     container_name: api_gateway
@@ -20,8 +20,8 @@ services:
     restart: always
     build: api_gateway/.
     environment:
-      - BOOK_MICROSERVICE_HOST=book_service
-      - BOOK_MICROSERVICE_PORT=3000
+      - BOOK_MICROSERVICE_BASE_URL=http://book_service:3000
+      - USER_MICROSERVICE_BASE_URL=http://user_service:3001
 
   book_service:
     container_name: book_service
@@ -30,9 +30,10 @@ services:
     restart: always
     build: book_microservice/.
     links:
-      - mongo
+      - db_mongo_books
     environment:
-      - DB_HOST=mongo
+      - DB_HOST=db_mongo_books
+      - DB_NAME=db_books
 
   user_service:
     container_name: user_service
@@ -41,10 +42,19 @@ services:
     restart: always
     build: user_microservice/.
     links:
-      - mongo
+      - db_mongo_users
     environment:
-      - DB_HOST=mongo
+      - DB_HOST=db_mongo_users
+      - DB_NAME=db_users
 
-  mongo:
-    container_name: mongo
+  db_mongo_books:
+    container_name: db_mongo_books
     image: mongo:latest
+    ports:
+      - "27017:27017"
+
+  db_mongo_users:
+    container_name: db_mongo_users
+    image: mongo:latest
+    ports:
+      - "27018:27017"

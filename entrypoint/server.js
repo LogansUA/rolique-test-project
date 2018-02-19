@@ -23,18 +23,22 @@ const UPLOADS_DIR = process.env.SERVER_UPLOADS_DIRECTORY || path.join(__dirname,
 const IMAGES_DIR = path.join(UPLOADS_DIR, 'images');
 const DOCUMENTS_DIR = path.join(UPLOADS_DIR, 'documents');
 
-app.use('/images/avatar', express.static(IMAGES_DIR));
+// Static serving paths
+app.use('/images', express.static(IMAGES_DIR));
 app.use('/documents', express.static(DOCUMENTS_DIR));
 
-const apiGateWayUrl = `${process.env.API_GATEWAY_BASE_URL}`;
-
-app.get('*', async (req, res) => {
+app.all('/api/*', async (req, res) => {
     try {
-        const requestUrl = `${apiGateWayUrl}${req.originalUrl}`;
+        const urlParams = req.params;
+        const urlPath = path.join.apply(null, Object.values(urlParams));
 
-        const request = await axios.get(requestUrl);
+        const apiGateWayUrl = `${process.env.API_GATEWAY_BASE_URL}`;
+        const requestUrl = `${apiGateWayUrl}/${urlPath}`;
 
-        return res.status(httpStatus.OK).json(request.body);
+        // Query parameters will be sent by url
+        const response = await axios[req.method.toLowerCase()](requestUrl, req.body);
+
+        return res.status(response.status).json(response.data);
     } catch (error) {
         return res.status(httpStatus.INTERNAL_SERVER_ERROR).json(error.toString());
     }
@@ -54,9 +58,9 @@ app.use(function (err, req, res) {
 });
 
 process.on('uncaughtException', (err) => {
-    console.error('Unhandled Exception', err)
+    console.error('Unhandled Exception', err.toString())
 });
 
 process.on('uncaughtRejection', (err, promise) => {
-    console.error('Unhandled Rejection', err)
+    console.error('Unhandled Rejection at Promise: ', promise, 'reason: ', err.toString())
 });
